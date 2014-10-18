@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class ActivityLoaderActivity extends Activity {
     
-	static private final int GET_TEXT_REQUEST_CODE = 1;
+	static private final int GET_TEXT_REQUEST_CODE = 25;
 	static private final String URL = "http://www.google.com";
 	static private final String TAG = "Lab-Intents";
     
@@ -29,12 +29,6 @@ public class ActivityLoaderActivity extends Activity {
 		
 		// Get reference to the textView
 		mUserTextView = (TextView) findViewById(R.id.textView1);
-
-        Bundle extras = getIntent().getExtras();
-        if(extras!=null){
-            String receivedText = extras.getString("TEXT");
-            mUserTextView.setText(receivedText);
-        }
         
 		// Declare and setup Explicit Activation button
 		Button explicitActivationButton = (Button) findViewById(R.id.explicit_activation_button);
@@ -75,7 +69,7 @@ public class ActivityLoaderActivity extends Activity {
 		Intent explicitIntent = new Intent("course.labs.intentslab.EXPLICIT_ACTIVITY");
 		
 		// Start an Activity using that intent and the request code defined above
-        startActivity(explicitIntent);
+        startActivityForResult(explicitIntent, GET_TEXT_REQUEST_CODE);
 		
         
         
@@ -109,12 +103,21 @@ public class ActivityLoaderActivity extends Activity {
         
 		Log.i(TAG, "Entered onActivityResult()");
 		
-		// TODO - Process the result only if this method received both a
+		// Process the result only if this method received both a
 		// RESULT_OK result code and a recognized request code
 		// If so, update the Textview showing the user-entered text.
 
-	
-    
+        if (requestCode == GET_TEXT_REQUEST_CODE && resultCode == RESULT_OK) {
+
+            if(data != null){
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    String receivedText = extras.getString("TEXT");
+                    mUserTextView.setText(receivedText);
+            }
+        }
+
+
     
     
     
